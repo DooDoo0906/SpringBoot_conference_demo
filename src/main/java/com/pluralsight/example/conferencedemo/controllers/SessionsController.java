@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,14 +23,18 @@ public class SessionsController {
         //JPA build this method to query all the data to a list of Session objects
         //Spring MVC will pass that over to Jackson(serialization library)
         //which will turn those sessions into JSON and return back to the caller
-        return sessionRepository.findAll();
+        var m = sessionRepository.findAll();
+        var n = new ArrayList<Session>();
+        n.add(new Session());
+        return m;
     }
 
     @GetMapping
     //add additional id to the URL from the original URL
     @RequestMapping("{id}")
     public Session get(@PathVariable Long id) {
-        return sessionRepository.getOne(id);
+        var m =sessionRepository.getOne(id);
+        return m;
     }
 
     @PostMapping
@@ -50,7 +55,7 @@ public class SessionsController {
     public Session update(@PathVariable Long id, @RequestBody Session session) {
         //because this is a PUT, we expect all attributes to be passed in
         //TODO: Add validation that all attributes are passed in, otherwise return a 400 bad payload
-        Session existingSession = sessionRepository.getOne(id);
+        Session existingSession = sessionRepository.getReferenceById(id);
         BeanUtils.copyProperties(session, existingSession, "session_id");
         return sessionRepository.saveAndFlush(existingSession);
     }

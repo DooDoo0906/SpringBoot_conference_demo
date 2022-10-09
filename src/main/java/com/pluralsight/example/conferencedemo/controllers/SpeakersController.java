@@ -24,7 +24,7 @@ public class SpeakersController {
     @GetMapping
     @RequestMapping("{id}")
     public Speaker get(@PathVariable Long id) {
-        return speakerRepository.getOne(id);
+        return speakerRepository.getReferenceById(id);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
@@ -39,7 +39,7 @@ public class SpeakersController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public Speaker update(@PathVariable Long id, @RequestBody final Speaker speaker) {
-        var existSpeaker = speakerRepository.getOne(id);
+        var existSpeaker = speakerRepository.getReferenceById(id);
         BeanUtils.copyProperties(speaker, existSpeaker, "speaker_id");
         return speakerRepository.saveAndFlush(existSpeaker);
     }
